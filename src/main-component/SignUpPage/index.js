@@ -15,9 +15,12 @@ const SignUpPage = (props) => {
 
     const [value, setValue] = useState({
         email: '',
-        full_name: '',
         password: '',
         confirm_password: '',
+        names: '',
+        last_names: '',
+        address: '',
+        phone: '',
     });
 
     const changeHandler = (e) => {
@@ -36,12 +39,15 @@ const SignUpPage = (props) => {
         if (validator.allValid()) {
             setValue({
                 email: '',
-                full_name: '',
                 password: '',
                 confirm_password: '',
+                names: '',
+                last_names: '',
+                address: '',
+                phone: '',
             });
             validator.hideMessages();
-            axios.post(URL + 'users', value)
+            axios.post(URL + 'clients', value)
             toast.success('Registration Complete successfully!');
             push('/login');
         } else {
@@ -61,10 +67,10 @@ const SignUpPage = (props) => {
                             <TextField
                                 className="inputOutline"
                                 fullWidth
-                                placeholder="Full Name"
-                                value={value.full_name}
+                                placeholder="Names"
+                                value={value.names}
                                 variant="outlined"
-                                name="full_name"
+                                name="names"
                                 label="Name"
                                 InputLabelProps={{
                                     shrink: true,
@@ -72,7 +78,58 @@ const SignUpPage = (props) => {
                                 onBlur={(e) => changeHandler(e)}
                                 onChange={(e) => changeHandler(e)}
                             />
-                            {validator.message('full name', value.full_name, 'required|alpha')}
+                            {validator.message('names', value.names, 'required')}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="inputOutline"
+                                fullWidth
+                                placeholder="Last names"
+                                value={value.last_names}
+                                variant="outlined"
+                                name="last_names"
+                                label="Last names"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onBlur={(e) => changeHandler(e)}
+                                onChange={(e) => changeHandler(e)}
+                            />
+                            {validator.message('last names', value.last_names, 'required')}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="inputOutline"
+                                fullWidth
+                                placeholder="Address"
+                                value={value.address}
+                                variant="outlined"
+                                name="address"
+                                label="Address"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onBlur={(e) => changeHandler(e)}
+                                onChange={(e) => changeHandler(e)}
+                            />
+                            {validator.message('address', value.address, 'required')}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="inputOutline"
+                                fullWidth
+                                placeholder="Phone"
+                                value={value.phone}
+                                variant="outlined"
+                                name="phone"
+                                label="Phone"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onBlur={(e) => changeHandler(e)}
+                                onChange={(e) => changeHandler(e)}
+                            />
+                            {validator.message('phone', value.phone, 'required')}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
