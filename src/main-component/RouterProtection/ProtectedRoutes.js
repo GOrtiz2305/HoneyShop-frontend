@@ -14,7 +14,7 @@ const ProtectedRoutes = () => {
 
     let isLogged = false;
 
-    if (localStorage.getItem('token')) {
+    if (parseJwt(localStorage.getItem('token')).user.role_id === 2) {
         isLogged = (parseJwt(localStorage.getItem('token')).exp * 1000 > Date.now());
     }
 

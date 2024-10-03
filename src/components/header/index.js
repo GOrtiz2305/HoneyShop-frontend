@@ -119,6 +119,9 @@ class Header extends Component {
                           <li>
                             <Link onClick={this.logoutHandler} to="/login">Log out</Link>
                           </li>
+                          <li>
+                            <Link onClick={this.logoutHandler} to="/profile">Profile</Link>
+                          </li>
                         </ul>
                         :
                         <ul>
@@ -138,7 +141,7 @@ class Header extends Component {
                       }
                     </div>
                     <div>
-                      {tokenExistAndStillValid ? <label>{parseJwt(localStorage.getItem('token')).user.full_name}</label> : null}
+                      {tokenExistAndStillValid ? <label>Welcome!</label> : null}
                     </div>
                   </div>
                   <div className="mini-cart">

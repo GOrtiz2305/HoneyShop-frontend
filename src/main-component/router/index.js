@@ -14,6 +14,7 @@ import SignUpPage from '../SignUpPage'
 import ForgotPassword from '../ForgotPassword'
 import InventoryPage from '../InventoryPage'
 import ProtectedRoutes from '../RouterProtection/ProtectedRoutes'
+import ProfilePage from '../ProfilePage';
 
 const AllRoute = () => {
 
@@ -36,6 +37,7 @@ const AllRoute = () => {
           <Route element={<ProtectedRoutes/>}>
             <Route path='/inventory' element={<InventoryPage />} />
           </Route>
+          <Route path='/profile' element={<ProfilePage />} />
           <Route path='*' element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
