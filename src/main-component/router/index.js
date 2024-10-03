@@ -13,6 +13,7 @@ import LoginPage from '../LoginPage'
 import SignUpPage from '../SignUpPage'
 import ForgotPassword from '../ForgotPassword'
 import InventoryPage from '../InventoryPage'
+import ProtectedRoutes from '../RouterProtection/ProtectedRoutes'
 
 const AllRoute = () => {
 
@@ -32,7 +33,10 @@ const AllRoute = () => {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<SignUpPage />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/inventory' element={<InventoryPage />} />
+          <Route element={<ProtectedRoutes/>}>
+            <Route path='/inventory' element={<InventoryPage />} />
+          </Route>
+          <Route path='*' element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </div>

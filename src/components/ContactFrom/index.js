@@ -45,7 +45,7 @@ class ContactForm extends Component {
             error.subject = "Please enter your subject";
         }
         if (lastname === '') {
-            error.lastname = "Please enter your Lastname";
+            error.lastname = "Please enter your Last name";
         }
         if (events === '') {
             error.events = "Select your event list";
@@ -90,7 +90,7 @@ class ContactForm extends Component {
                     </div>
                     <div className="col-lg-6 col-md-6 col-12">
                         <div className="form-field">
-                            <input value={lastname} onChange={this.changeHandler} type="text" name="lastname" placeholder="Lastname"/>
+                            <input value={lastname} onChange={this.changeHandler} type="text" name="lastname" placeholder="Last name"/>
                             <p>{error.lastname ? error.lastname : ''}</p>
                         </div>
                     </div>
