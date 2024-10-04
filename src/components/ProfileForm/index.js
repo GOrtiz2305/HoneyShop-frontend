@@ -6,14 +6,13 @@ function parseJwt(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
-
+  
     return JSON.parse(jsonPayload);
 }
 
 class ProfileForm extends Component {
-
 
     state = {
         names: '',
@@ -30,8 +29,11 @@ class ProfileForm extends Component {
     fetchUserData = async () => {
         this.setState({ isLoading: true }); // Set loading state to true
 
+        let user_id = parseJwt(localStorage.getItem('token'));
+        //console.log(parseJwt(localStorage.getItem('token')));
+
         try {
-            const response = await axios.get(URL + 'clients/user/' + parseJwt(localStorage.getItem('token')).user.id); // Fetch user data
+            const response = await axios.get(URL + 'clients/user/15'); // Fetch user data
             const userData = response.data; // Access user data from response
 
             this.setState({
@@ -40,6 +42,8 @@ class ProfileForm extends Component {
                 address: userData.address,
                 phone: userData.phone,
             });
+
+            console.log("Info" + userData);
         } catch (error) {
             console.error('Error fetching user data:', error);
             // Handle errors appropriately, e.g., display an error message
