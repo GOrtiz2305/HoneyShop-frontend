@@ -49,15 +49,15 @@ const CartPage = (props) => {
                           carts.map((catItem, crt) => (
                             <tr key={crt}>
                               <td className="images">
-                                <img src={catItem.proImg} alt="" />
+                                <img alt="" />
                               </td>
                               <td className="product">
                                 <ul>
                                   <li className="first-cart">
-                                    {catItem.title}
+                                    {catItem.product_name}
                                   </li>
-                                  <li>Brand : {catItem.brand}</li>
-                                  <li>Size : {catItem.size}</li>
+                                  <li>Brand : {catItem.brand.brand_name}</li>
+                                  <li>Size : {catItem.presentation.presentation_name}</li>
                                 </ul>
                               </td>
                               <td className="stock">
@@ -114,9 +114,6 @@ const CartPage = (props) => {
                           <i className="fa fa-angle-double-right"></i>
                         </Link>
                       </li>
-                      <li>
-                        <button type="submit">Update Cart</button>
-                      </li>
                     </ul>
                   </div>
                   <div className="cart-product-list">
@@ -126,12 +123,6 @@ const CartPage = (props) => {
                       </li>
                       <li>
                         Sub Price<span>${totalPrice(carts)}</span>
-                      </li>
-                      <li>
-                        Vat<span>$0</span>
-                      </li>
-                      <li>
-                        Eco Tax<span>$0</span>
                       </li>
                       <li>
                         Delivery Charge<span>$0</span>

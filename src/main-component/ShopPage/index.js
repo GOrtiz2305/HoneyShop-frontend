@@ -7,15 +7,14 @@ import Scrollbar from "../../components/scrollbar";
 import FilterSidebar from "../../components/FilterSidebar";
 import FilterAllProduct from "../../components/FilterAllProduct";
 import api from "../../api";
-import { addToCart, addToWishList } from "../../store/actions/action";
+import { addToCart } from "../../store/actions/action";
 
-const ShopPage = ({ addToCart, addToWishList }) => {
+const ShopPage = ({ addToCart }) => {
   const productsArray = api();
 
   const [filter, setFilter] = useState({
     price: "",
     size: "",
-    color: "",
     brand: "",
   });
 
@@ -41,18 +40,13 @@ const ShopPage = ({ addToCart, addToWishList }) => {
   };
 
   const addToCartProduct = (product) => {
-    addToCart(product, 1, filter.color, filter.size);
+    addToCart(product, 1, filter.size);
   };
 
   const products = productsArray
     .filter((el) => priceFIlter(el.price))
     .filter((el) => (filter.size ? el.size === filter.size : true))
-    .filter((el) => (filter.color ? el.color === filter.color : true))
     .filter((el) => (filter.brand ? el.brand === filter.brand : true));
-
-  const addToWishListProduct = (products) => {
-    addToWishList(products);
-  };
 
   return (
     <Fragment>
@@ -68,7 +62,6 @@ const ShopPage = ({ addToCart, addToWishList }) => {
             />
             <FilterAllProduct
               addToCartProduct={addToCartProduct}
-              addToWishListProduct={addToWishListProduct}
               products={products}
             />
           </div>
@@ -80,4 +73,4 @@ const ShopPage = ({ addToCart, addToWishList }) => {
   );
 };
 
-export default connect(null, { addToCart, addToWishList })(ShopPage);
+export default connect(null, { addToCart })(ShopPage);

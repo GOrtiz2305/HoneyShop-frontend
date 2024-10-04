@@ -19,7 +19,8 @@ class ProfileForm extends Component {
         last_names: '',
         address: '',
         phone: '',
-        error: {}
+        error: {},
+        isLoading: false,
     }
 
     componentDidMount() {
@@ -28,29 +29,37 @@ class ProfileForm extends Component {
 
     fetchUserData = async () => {
         this.setState({ isLoading: true }); // Set loading state to true
-
-        let user_id = parseJwt(localStorage.getItem('token'));
-        //console.log(parseJwt(localStorage.getItem('token')));
-
-        try {
-            const response = await axios.get(URL + 'clients/user/15'); // Fetch user data
-            const userData = response.data; // Access user data from response
-
-            this.setState({
-                names: userData.names,
-                last_names: userData.last_names,
-                address: userData.address,
-                phone: userData.phone,
-            });
-
-            console.log("Info" + userData);
+    
+        let userId = 15;
+        /*try {
+          const token = localStorage.getItem('token'); // Get token from localStorage
+          if (token) {
+            userId = parseJwt(token).id; // Extract user ID from parsed token
+          } else {
+            console.warn('No token found in localStorage. User ID will not be used.');
+          }
         } catch (error) {
-            console.error('Error fetching user data:', error);
-            // Handle errors appropriately, e.g., display an error message
+          console.error('Error parsing token:', error);
+          // Handle token parsing errors appropriately
+        }*/
+    
+        try {
+          const response = await axios.get(`${URL}clients/user/${userId}`); // Use userId if available, fallback to 15
+          const userData = response.data; // Access user data from response
+    
+          this.setState({
+            names: userData.names,
+            last_names: userData.last_names,
+            address: userData.address,
+            phone: userData.phone,
+          });
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          // Handle errors appropriately, e.g., display an error message
         } finally {
-            this.setState({ isLoading: false }); // Set loading state to false
+          this.setState({ isLoading: false }); // Set loading state to false
         }
-    };
+      };
 
     changeHandler = (e) => {
         const error = this.state.error;
