@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from "react";
-import { Dialog, Grid, Button } from "@material-ui/core";
+import React, { Fragment, useState, useEffect } from "react";
+import { Dialog, Grid } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
@@ -7,6 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import bee from '../../images/bee2.png'
 import axios from "axios";
 import { URL } from "../../config";
+import { toast } from "react-toastify";
 
 const updateUri = URL + "products/";
 
@@ -17,9 +18,10 @@ const DefaultModal = ({
   product,
   updateProduct,
 }) => {
-  const [productName, setProductName] = useState();
-  const [price, setPrice] = useState();
-  const [newStock, setNewStock] = useState("");
+  const [productName, setProductName] = useState(product.product_name);
+  const [price, setPrice] = useState(product.price);
+  const [newStock, setNewStock] = useState(product.stock);
+  const [product_description, setProductDescription] = useState(product.product_description);
 
   const styles = (theme) => ({
     root: {
@@ -53,19 +55,32 @@ const DefaultModal = ({
   });
   
   //Handle the update of the stock
-  const updateStock = async (id) => {
+  const updateProductInfo = async (id) => {
     try {
       const response = await axios.put(updateUri + id, {
+        name: productName,
         stock: parseFloat(newStock), // Ensure numerical value for stock
         product_name: productName,
+        price: parseFloat(price),
+        product_description: product_description,
       });
+      window.location.reload();
       updateProduct(response.data);
-      onClose(); // Close the modal after successful update
     } catch (error) {
       console.error(error);
     }
   };
 
+  // Actualiza los estados cuando el producto cambia
+  useEffect(() => {
+    if (product) {
+      setProductName(product.product_name);
+      setPrice(product.price);
+      setNewStock(product.stock);
+      setProductDescription(product.product_description);
+    }
+  }, [product]);
+  
   return (
     <Fragment>
       <Dialog
@@ -84,35 +99,42 @@ const DefaultModal = ({
               <div className="">
                 <div className="product-single-content">
                   <br/>
-                  <h3>{product.id}</h3>
+                  <h3>Update product</h3>
+                  <label><b>Name:</b></label>
                   <input
-                    style={{ width: '100%' }}
                     type="text"
-                    placeholder={product.product_name}
+                    value={productName}
                     onChange={(e) => setProductName(e.target.value)}
                   />
                   <p></p>
+                  <label><b>Price:</b></label>
                   <input
                     style={{ width: '100%' }}
                     type="number"
-                    placeholder={product.price}
+                    value={price}
                     onChange={(e) => setPrice(e.target.value)}
                   />
                   <p></p>
-                  <textarea style={{width:'150%', height:'200px'}} placeholder={product.product_description}></textarea>
+                  <label><b>Description:</b></label>
+                  <textarea 
+                    style={{width:'100%', height:'200px'}} 
+                    value={product_description}
+                    onChange={(e) => setProductDescription(e.target.value)}
+                    />
                   <p></p>
+                  <label><b>Stock:</b></label>
                   <input
-                    style={{ width: '150%' }}
+                    style={{ width: '100%' }}
                     type="number"
                     name="new_stock"
                     id="new_stock"
                     step="1.00"
                     min="0"
-                    placeholder={product.stock}
+                    value={newStock}
                     onChange={(e) => setNewStock(e.target.value)}
                   />
-                  <p></p>
-                  <button className="btn theme-btn" onClick={() => updateStock(product.id)}>
+                  <p></p>                  
+                  <button className="btn theme-btn" onClick={() => updateProductInfo(product.id)}>
                     Update
                   </button>
                   <div className="m-shape">

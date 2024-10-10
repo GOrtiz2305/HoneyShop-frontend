@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 
 class ProductForm extends Component {
 
-
     state = {
         name: '',
         price: '',
