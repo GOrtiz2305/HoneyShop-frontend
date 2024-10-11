@@ -61,7 +61,7 @@ const ProductGrid = ({ addToCartProduct }) => {
                 </div>
                 <div className="product-content">
                   <h3>
-                    <Link onClick={ClickHandler} to={`/product-single/${product.id}`}>
+                    <Link to={`/product-single/${product.id}`}>
                       {product.product_name}
                     </Link>
                   </h3>

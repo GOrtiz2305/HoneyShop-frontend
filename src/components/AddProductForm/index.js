@@ -144,7 +144,7 @@ const AddProductForm = () => {
                         <select onChange={changeHandler} name="brand" required>
                             <option value="">Choose a brand</option>
                             {brands.map((brand) => (
-                                <option key={brand.id} value={brand.id}>
+                                <option key={brand.id_brand} value={brand.id_brand}>
                                     {brand.brand_name}
                                 </option>
                             ))}

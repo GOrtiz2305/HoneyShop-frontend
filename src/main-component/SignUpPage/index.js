@@ -35,6 +35,12 @@ const SignUpPage = (props) => {
 
     const submitForm = (e) => {
         e.preventDefault();
+
+        // Check if password matches confirm_password
+        if (value.password !== value.confirm_password) {
+            toast.error("Passwords do not match!");
+            return;
+        }
         
         if (validator.allValid()) {
             setValue({
@@ -157,6 +163,7 @@ const SignUpPage = (props) => {
                                 variant="outlined"
                                 name="password"
                                 label="Password"
+                                type="password"
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -170,17 +177,18 @@ const SignUpPage = (props) => {
                                 className="inputOutline"
                                 fullWidth
                                 placeholder="Confirm Password"
-                                value={value.password}
+                                value={value.confirm_password}
                                 variant="outlined"
                                 name="confirm_password"
                                 label="Confirm Password"
+                                type="password"
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                                 onBlur={(e) => changeHandler(e)}
                                 onChange={(e) => changeHandler(e)}
                             />
-                            {validator.message('confirm password', value.confirm_password, `in:${value.password}`)}
+                            {validator.message('confirm_password', value.confirm_password, 'required')}
                         </Grid>
                         <Grid item xs={12}>
                             <Grid className="formFooter">
