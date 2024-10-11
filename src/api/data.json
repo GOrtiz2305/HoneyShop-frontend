@@ -115,5 +115,30 @@
     "color": "cf1105",
     "brand": "flower",
     "stock": "In Stock"
+  },{
+    "id": 9,
+    "proImg": "/product/1.png",
+    "offer": "-28%",
+    "title": "Manuka Honey",
+    "price": "155.00",
+    "delPrice": "198.00",
+    "link": "/product-single",
+    "size": "small",
+    "color": "cf1105",
+    "brand": "flower",
+    "stock": "In Stock"
+  },
+  {
+    "id": 13,
+    "proImg": "/product/1.png",
+    "offer": "-28%",
+    "title": "Manuka Honey",
+    "price": "155.00",
+    "delPrice": "198.00",
+    "link": "/product-single",
+    "size": "small",
+    "color": "cf1105",
+    "brand": "flower",
+    "stock": "In Stock"
   }
 ]

@@ -6,35 +6,37 @@ import PageTitle from '../../components/pagetitle'
 import Footer from '../../components/footer'
 import Scrollbar from '../../components/scrollbar'
 import { connect } from "react-redux";
-import api from "../../api";
 import { addToCart } from "../../store/actions/action";
+import axios from "axios";
+import { URL } from "../../config";
 
 
 const ProductDetailsPage =(props) => {
 
     const { id } = useParams()
-
-    
-    const productsArray = api();
-    const Allproduct = productsArray
-
-    
     const {addToCart} = props;
     const [product, setProduct] = useState({});
-    
-    useEffect(() => {
-        setProduct(Allproduct.filter(Allproduct => Allproduct.id === Number(id)))
-    }, []);
-    
-    const item = product[0];
+    const [productsArray, setProductsArray] = useState([]);
 
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get(`${URL}products`); // Cambia esto a tu URL de API
+                setProductsArray(response.data); // Ajusta según la estructura de tu API
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
     return(
         <Fragment>
             <Navbar hClass={'header-style-2'}/>
             <PageTitle pageTitle={'Product Single'} pagesub={'Product'}/> 
-            {item ? <ProductSingleSec
-                item={item}
+            {product ? <ProductSingleSec
+                item={product}
                 addToCart={addToCart}
             /> : null}
             <Footer/>

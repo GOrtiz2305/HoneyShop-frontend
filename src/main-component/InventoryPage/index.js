@@ -1,18 +1,16 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import Navbar from "../../components/Navbar";
 import PageTitle from "../../components/pagetitle";
 import Footer from "../../components/footer";
 import Scrollbar from "../../components/scrollbar";
-import FilterSidebar from "../../components/FilterSidebar";
-import FilterAllProduct from "../../components/FilterAllProduct";
-import api from "../../api";
 import { addToCart, addToWishList } from "../../store/actions/action";
 import InventoryTable from "../../components/InventoryTable";
+import axios from 'axios';
+import { URL } from "../../config";
 
 const InventoryPage = ({ addToCart, addToWishList }) => {
-  const productsArray = api();
-
+  const [productsArray, setProductsArray] = useState([]);
   const [filter, setFilter] = useState({
     price: "",
     size: "",
@@ -20,14 +18,18 @@ const InventoryPage = ({ addToCart, addToWishList }) => {
     brand: "",
   });
 
-  const priceChangeHandler = ({ target: { name, value } }) => {
-    const val = typeof value === "string" ? JSON.parse(value) : value;
-    setFilter({ ...filter, [name]: val });
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${URL}products`); // Cambia esto a tu URL de API
+        setProductsArray(response.data); // Ajusta según la estructura de tu API
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
 
-  const changeHandler = ({ target: { name, value } }) => {
-    setFilter({ ...filter, [name]: value });
-  };
+    fetchProducts();
+  }, []);
 
   const priceFIlter = (price) => {
     if (filter.price === "") {
@@ -41,19 +43,11 @@ const InventoryPage = ({ addToCart, addToWishList }) => {
     }
   };
 
-  const addToCartProduct = (product) => {
-    addToCart(product, 1, filter.color, filter.size);
-  };
-
   const products = productsArray
     .filter((el) => priceFIlter(el.price))
     .filter((el) => (filter.size ? el.size === filter.size : true))
     .filter((el) => (filter.color ? el.color === filter.color : true))
     .filter((el) => (filter.brand ? el.brand === filter.brand : true));
-
-  const addToWishListProduct = (products) => {
-    addToWishList(products);
-  };
 
   return (
     <Fragment>

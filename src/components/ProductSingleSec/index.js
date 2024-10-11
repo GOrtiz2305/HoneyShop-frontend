@@ -7,36 +7,30 @@ import axios from "axios";
 import { URL } from "../../config";
 
 const ProductSingleSec = ({ item, addToCart }) => {
-  const [data, setData] = useState([]);
+  const [product, setProduct] = useState([]);
   const [presentationName, setPresentationName] = useState({}); // State to store presentation names
+  const [brandName, setBrandName] = useState({}); // State to store brand names
   const [productId] = window.location.pathname.split('/').slice(-1); // Extract product ID from URL
+  const [qty, setQty] = useState(1);
 
   useEffect(() => {
-    axios
-      .get(URL + "products/" + productId)
-      .then((response) => {
-        setData(response.data);
-        
-        //Print presentation.presentation_name
-        axios
-          .get(URL + "presentations/" + response.data.presentation_id)
-          .then((response) => {
-            setPresentationName(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    const fetchProduct = async () => {
+      try {
+        const productResponse = await axios.get(`${URL}products/${productId}`);
+        setProduct(productResponse.data);
 
-  const ClickHandler = () => {
-    window.scrollTo(10, 0);
-  };
+        const presentationResponse = await axios.get(`${URL}presentations/${productResponse.data.presentation_id}`);
+        setPresentationName(presentationResponse.data);
 
-  const [qty, setQty] = useState(1);
+        const brandResponse = await axios.get(`${URL}brands/${productResponse.data.brand_id}`);
+        setBrandName(brandResponse.data); 
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]); // Agregar productId como dependencia
 
   return (
     <div className="product-single-section section-padding">
@@ -49,8 +43,8 @@ const ProductSingleSec = ({ item, addToCart }) => {
                   <div className="item">
                     <Zoom>
                       <img
-                        alt="that wanaka tree"
-                        src={item.proImg ? item.proImg : ""}
+                        alt={product.product_name}
+                        src={item.proImg || ''}
                         width="500"
                       />
                     </Zoom>
@@ -60,10 +54,10 @@ const ProductSingleSec = ({ item, addToCart }) => {
             </div>
             <div className="col-lg-7">
               <div className="product-single-content">
-                <h5>{data.product_name}</h5>
-                <h6>${data.price}</h6>
+                <h5>{product.product_name}</h5>
+                <h6>${product.price}</h6>
                 <p>
-                  {data.product_description}
+                  {product.product_description}
                 </p>
                 <div className="product-filter-item color filter-size">
                   <div className="color-name">
@@ -73,6 +67,19 @@ const ProductSingleSec = ({ item, addToCart }) => {
                         <input type="radio" name="size" value="30" />
                           <label>
                             {presentationName.presentation_name}
+                          </label>
+                        </li>
+                      </ul>
+                  </div>
+                </div>
+                <div className="product-filter-item color filter-size">
+                  <div className="color-name">
+                    <span>Brand :</span>
+                    <ul>
+                        <li className="color">
+                        <input type="radio" name="size" value="30" />
+                          <label>
+                            {brandName.brand_name}
                           </label>
                         </li>
                       </ul>
