@@ -194,7 +194,7 @@ const SignUpPage = (props) => {
                             <Grid className="formFooter">
                                 <Button fullWidth className="cBtn cBtnLarge cBtnTheme" type="submit">Sign Up</Button>
                             </Grid>
-                            <p className="noteHelp">Already have an account? <Link to="/login">Return to Sign In</Link>
+                            <p className="noteHelp">Already have an account? <Link to="/login">Return to Sign In</Link><Link to="/home">Return home</Link>
                             </p>
                         </Grid>
                     </Grid>

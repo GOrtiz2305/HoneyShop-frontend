@@ -1,15 +1,19 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import DefaultModal from "../Modal";
 import { URL } from "../../config";
 
-const ProductList = ({ products, addToCartProduct,addToWishListProduct }) => {
+const ProductsPerPage = 4; // Número de productos por pestaña
+
+const ProductList = ({ addToCartProduct, addToWishListProduct }) => {
 
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [state, setState] = useState({});
 
   useEffect(() => {
-    axios.get(URL + 'products')
+    axios.get(URL + 'products/inventory/active')
       .then(response => {
         setData(response.data);
       })
@@ -21,90 +25,63 @@ const ProductList = ({ products, addToCartProduct,addToWishListProduct }) => {
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
-  const [open, setOpen] = React.useState(false);
 
   function handleClose() {
     setOpen(false);
   }
-
-  const [state, setState] = useState({});
 
   const handleClickOpen = (item) => {
     setOpen(true);
     setState(item);
   };
 
+  const totalPages = Math.ceil(data.length / ProductsPerPage); // Calcular el número total de páginas
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const displayedProducts = data.slice(currentPage * ProductsPerPage, (currentPage + 1) * ProductsPerPage);
+
   return (
     <div className="product-list">
-        <div className="product-wrap">
-          <div className="row align-items-center">
-            {data.length > 0 &&
-              data.slice(0,6).map((product, pitem) => (
-                <div className="col-xl-12 col-12" key={pitem}>
-                    <div className="product-item">
-                      <div className="product-img">
-                        <img src={product.proImg} alt="" />
-                        <ul>
-                          <li>
-                            <button
-                              data-bs-toggle="tooltip"
-                              data-bs-html="true"
-                              title="Add to Cart"
-                              onClick={() => addToCartProduct(product)}
-                            >
-                              <i className="fi flaticon-shopping-cart"></i>
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                                  data-bs-toggle="tooltip"
-                                  data-bs-html="true"
-                                  title="Add to Cart"
-                                  onClick={() => handleClickOpen(product)}
-                                >
-                                  <i className="fi ti-eye"></i>
-                              </button>
-                          </li>
-                          <li>
-                            <button
-                                data-bs-toggle="tooltip"
-                                data-bs-html="true"
-                                title="Add to Cart"
-                                onClick={() => addToWishListProduct(product)}
-                            >
-                                <i className="fi flaticon-like"></i>
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product-content">
-                        <h3>
-                          <Link onClick={ClickHandler} to={`/product-single/${product.id}`}>
-                            {product.product_name}
-                          </Link>
-                        </h3>
-                        <div className="product-btm">
-                          <div className="product-price">
-                            <ul>
-                              {/* If discount is enable for the actual product */}
-                              {product.discount === true && <li>${product.discount_price}</li> }
-                              <li>${product.price}</li>
-                            </ul>
-                          </div>
-                        </div>
-                        <p>{product.product_description}</p>
-                      </div>
+      <div className="product-wrap">
+        <div className="row align-items-center">
+          {displayedProducts.length > 0 &&
+            displayedProducts.map((product, pitem) => (
+              <div className="col-xl-12 col-12" key={pitem}>
+                <div className="product-item">
+                  <div className="product-content">
+                    <h2>
+                      <Link onClick={ClickHandler} to={`/product-single/${product.id}`}>
+                        {product.product_name}
+                      </Link>
+                    </h2>
+                    <div className="product-btm">
+                      <ul>
+                        <li>${product.price}</li>
+                      </ul>
                     </div>
+                    <p>{product.product_description}</p>
                   </div>
-              ))}
-          </div>
-          <DefaultModal
-            addToCartProduct={addToCartProduct}
-            open={open}
-            onClose={handleClose}
-            product={state}
-          />
+                </div>
+              </div>
+            ))}
         </div>
+
+        {/* Paginación */}
+        <div className="pagination">
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index)}
+              className={`btn theme-btn ${currentPage === index ? 'active' : ''}`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

@@ -110,7 +110,7 @@ const LoginPage = (props) => {
                             <Grid className="formFooter">
                                 <Button fullWidth className="cBtnTheme" type="submit">Login</Button>
                             </Grid>
-                            <p className="noteHelp">Don't have an account? <Link to="/register">Create free account</Link>
+                            <p className="noteHelp">Don't have an account? <Link to="/register">Create free account</Link><Link to="/home">Return home</Link>
                             </p>
                         </Grid>
                     </Grid>

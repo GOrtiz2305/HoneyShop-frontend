@@ -1,11 +1,15 @@
 import React, { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import DefaultModal from "../Modal";
 import { URL } from "../../config";
+
+const ProductsPerPage = 9; // Número de productos por pestaña
 
 const ProductGrid = ({ addToCartProduct }) => {
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // Estado para la página activa
+  const [open, setOpen] = React.useState(false);
+  const [state, setState] = useState({});
 
   useEffect(() => {
     axios.get(URL + 'products/inventory/active')
@@ -17,28 +21,21 @@ const ProductGrid = ({ addToCartProduct }) => {
       });
   }, []);
 
-  const ClickHandler = () => {
-    window.scrollTo(10, 0);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
-  const [open, setOpen] = React.useState(false);
 
-  function handleClose() {
-    setOpen(false);
-  }
+  const totalPages = Math.ceil(data.length / ProductsPerPage); // Calcular el número total de páginas
 
-  const [state, setState] = useState({});
-
-  const handleClickOpen = (item) => {
-    setOpen(true);
-    setState(item);
-  };
+  // Productos a mostrar en la página activa
+  const displayedProducts = data.slice(currentPage * ProductsPerPage, (currentPage + 1) * ProductsPerPage);
 
   return (
 
     <div className="product-wrap">
       <div className="row align-items-center">
-        {data.length > 0 &&
-          data.map((product, pitem) => (
+        {displayedProducts.length > 0 &&
+          displayedProducts.map((product, pitem) => (
             <div
               className="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12"
               key={pitem}
@@ -68,8 +65,6 @@ const ProductGrid = ({ addToCartProduct }) => {
                   <div className="product-btm">
                     <div>
                         <ul>
-                          {/* If discount is enable for the actual product */}
-                          {/*product.discount === true && <li>${product.discount_price}</li> */}
                           <li>${product.price}</li>
                         </ul>
                     </div>
@@ -79,12 +74,19 @@ const ProductGrid = ({ addToCartProduct }) => {
             </div>
           ))}
       </div>
-      <DefaultModal
-        addToCartProduct={addToCartProduct}
-        open={open}
-        onClose={handleClose}
-        product={state}
-      />
+
+      {/* Paginación */}
+      <div className="pagination">
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index)}
+            className={`btn theme-btn ${currentPage === index ? 'active' : ''}`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
