@@ -8,9 +8,7 @@ const ProductsPerPage = 9; // Número de productos por pestaña
 const ProductGrid = ({ addToCartProduct }) => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0); // Estado para la página activa
-  const [open, setOpen] = React.useState(false);
-  const [state, setState] = useState({});
-
+  
   useEffect(() => {
     axios.get(URL + 'products/inventory/active')
       .then(response => {
@@ -28,8 +26,8 @@ const ProductGrid = ({ addToCartProduct }) => {
   const totalPages = Math.ceil(data.length / ProductsPerPage); // Calcular el número total de páginas
 
   // Productos a mostrar en la página activa
-  const displayedProducts = data.slice(currentPage * ProductsPerPage, (currentPage + 1) * ProductsPerPage);
-
+  // const displayedProducts = data.slice(currentPage * ProductsPerPage, (currentPage + 1) * ProductsPerPage);
+  const displayedProducts = 9;
   return (
 
     <div className="product-wrap">
