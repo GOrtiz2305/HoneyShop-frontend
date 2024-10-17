@@ -62,7 +62,7 @@ const InventoryProductList = ({ products, addToCartProduct,addToWishListProduct 
 
   const handleDeleteProduct = async (productId) => {
     try {
-      const response = await axios.put(URL + `products/delete/${productId}`);
+      await axios.put(URL + `products/delete/${productId}`);
 
       // Update data after successful deletion
       const updatedActiveProducts = activeProducts.filter(
@@ -81,7 +81,7 @@ const InventoryProductList = ({ products, addToCartProduct,addToWishListProduct 
 
   const handleReactivateProduct = async (productId) => {
     try {
-      const response = await axios.put(URL + `products/activate/${productId}`);
+      await axios.put(URL + `products/activate/${productId}`);
 
       // Update data after successful deletion
       const updatedActiveProducts = activeProducts.filter(
@@ -172,9 +172,7 @@ const InventoryProductList = ({ products, addToCartProduct,addToWishListProduct 
                                 <li><b>Discount Price:</b> ${product.discount_price}</li>
                                 <li><b>On discount:</b> { product.discount == 1 ? 'Yes' : 'No' }</li>
                                 <li><b>Stock:</b> {product.stock}</li>
-                                <li><b>Brand:</b> {product.brand.brand_name}</li>
-                                <li><b>Presentation:</b> {product.presentation.presentation_name}</li>
-                              </ul>
+                              </ul>                       
                             </div>
                             <ul>
                               <li>
@@ -223,8 +221,6 @@ const InventoryProductList = ({ products, addToCartProduct,addToWishListProduct 
                                 <li><b>Discount Price:</b> ${product.discount_price}</li>
                                 <li><b>On discount:</b> { product.discount == 1 ? 'Yes' : 'No' }</li>
                                 <li><b>Stock:</b> {product.stock}</li>
-                                <li><b>Brand:</b> {product.brand.brand_name}</li>
-                                <li><b>Presentation:</b> {product.presentation.presentation_name}</li>
                               </ul>
                             </div>
                             <ul>

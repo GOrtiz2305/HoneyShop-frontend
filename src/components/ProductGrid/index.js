@@ -26,8 +26,8 @@ const ProductGrid = ({ addToCartProduct }) => {
   const totalPages = Math.ceil(data.length / ProductsPerPage); // Calcular el número total de páginas
 
   // Productos a mostrar en la página activa
-  // const displayedProducts = data.slice(currentPage * ProductsPerPage, (currentPage + 1) * ProductsPerPage);
-  const displayedProducts = 9;
+  const displayedProducts = data.slice(currentPage * ProductsPerPage, (currentPage + 1) * ProductsPerPage);
+  //const displayedProducts = 9;
   return (
 
     <div className="product-wrap">
