@@ -234,6 +234,9 @@ const CheckoutSection = ({cartList}) => {
                                             </Grid>
                                         </Collapse>
                                         <Collapse in={forms.payment_method === 'cash'} timeout="auto">
+                                            {/* Print cartlist when button clicked */}
+                                            <Button onClick={() => console.log(cartList)}>Print cartList</Button>
+
                                             <Grid className="cardType">
                                                 <Link to='/order_received' className="cBtn cBtnLarge cBtnTheme mt-20 ml-15" type="submit">Proceed to Checkout</Link>
                                             </Grid>
