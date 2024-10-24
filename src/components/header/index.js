@@ -6,9 +6,6 @@ import MobileMenu from "../../components/MobileMenu";
 import min3 from "../../images/shop/mini-cart/bee2.png";
 import { totalPrice } from "../../utils";
 import { removeFromCart, removeFromWishList } from "../../store/actions/action";
-import { Axios } from "axios";
-import { URL } from "../../config";
-import { Button } from "reactstrap";
 
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
@@ -59,18 +56,18 @@ class Header extends Component {
       tokenExistAndStillValid = false;
     }
 
-    const isUserAuthenticated = () => {
-      Axios.get(URL + 'isUserAuth', {
-        headers: {
-          "x-access-token": localStorage.getItem('token')
-        }
-      }).then((response) => {
-        console.log(response.data.auth);
-        return response.data.auth;
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
+    // const isUserAuthenticated = () => {
+    //   Axios.get(URL + 'isUserAuth', {
+    //     headers: {
+    //       "x-access-token": localStorage.getItem('token')
+    //     }
+    //   }).then((response) => {
+    //     console.log(response.data.auth);
+    //     return response.data.auth;
+    //   }).catch((error) => {
+    //     console.log(error);
+    //   });
+    // }
 
     return (
       <header id="header" className={`site-header ${this.props.hClass}`}>
