@@ -42,7 +42,7 @@ const LoginPage = (props) => {
             
             axios.post(URL + 'users/login', value)
             .then((response) => {
-                console.log("Response", response);
+                //console.log("Response", response);
                 if (response.status === 200) {
                     if(response.data.token) {
                         localStorage.setItem('token', response.data.token);

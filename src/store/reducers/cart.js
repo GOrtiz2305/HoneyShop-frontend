@@ -20,8 +20,8 @@ export const cartReducer = (state = init, action) => {
           if (product.id === productId) {
             cartAcc.push({
               ...product,
-              selected_color: action.color,
-              selected_size: action.size,
+              // selected_color: action.color,
+              // selected_size: action.size,
               qty: product.qty + productQty,
               sum:
                 ((product.price * product.discount) / 100) *
@@ -43,8 +43,8 @@ export const cartReducer = (state = init, action) => {
           ...state.cart,
           {
             ...action.product,
-            selected_color: action.color,
-            selected_size: action.size,
+            // selected_color: action.color,
+            // selected_size: action.size,
             qty: action.qty,
             sum:
               ((action.product.price * action.product.discount) / 100) *

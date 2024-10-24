@@ -19,7 +19,7 @@ const ProtectedRoutes = () => {
     }
 
     if (!isLogged) {
-        return <Navigate to='./404' />
+        return <Navigate to='/404' />
     }
 
   return (
