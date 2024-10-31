@@ -56,8 +56,8 @@ const CartPage = (props) => {
                                   <li className="first-cart">
                                     {catItem.product_name}
                                   </li>
-                                  <li>Brand : {catItem.brand.brand_name}</li>
-                                  <li>Size : {catItem.presentation.presentation_name}</li>
+                                  {/* <li>Brand : {catItem.brand.brand_name}</li> */}
+                                  {/* <li>Size : {catItem.presentation_id}</li> */}
                                 </ul>
                               </td>
                               <td className="stock">
@@ -135,6 +135,7 @@ const CartPage = (props) => {
                   <div className="submit-btn-area">
                     <ul>
                       <li>
+                        {/* If user is logged in */}
                         <Link
                           onClick={ClickHandler}
                           className="theme-btn"

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import Grid from "@material-ui/core/Grid";
 import Collapse from "@material-ui/core/Collapse";
 import FontAwesome from "../../components/UiStyle/FontAwesome";
@@ -11,8 +11,10 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import {Link} from 'react-router-dom'
-import {totalPrice} from "../../utils";
+import { useNavigate } from 'react-router-dom'
+import { totalPrice } from "../../utils";
+import axios from "axios";
+import { URL } from "../../config";
 
 // images
 import visa from '../../images/icon/visa.png';
@@ -23,6 +25,7 @@ import paypal from '../../images/icon/paypal.png';
 import CheckWrap from '../CheckWrap'
 
 import './style.scss';
+import { toast } from 'react-toastify';
 
 const cardType = [
     {
@@ -44,35 +47,29 @@ const cardType = [
 ];
 
 
-const CheckoutSection = ({cartList}) => {
+const CheckoutSection = ({ cartList }) => {
+    const navigate = useNavigate();
+
+    const isFormValid = () => {
+        const { name, lname, address, email, phone } = forms;
+        return name && lname && address && email && phone;
+    };
     // states
     const [tabs, setExpanded] = React.useState({
-        billing_adress: false,
-        payment: true
+        billing_adress: true,
+        payment: false
     });
     const [forms, setForms] = React.useState({
-        cupon_key: '',
-        fname: '',
+
+        name: '',
         lname: '',
-        country: '',
-        dristrict: '',
         address: '',
-        post_code: '',
         email: '',
         phone: '',
-        note: '',
+        notes: '',
 
         payment_method: 'cash',
         card_type: '',
-
-        fname2: '',
-        lname2: '',
-        country2: '',
-        dristrict2: '',
-        address2: '',
-        post_code2: '',
-        email2: '',
-        phone2: '',
 
         card_holder: '',
         card_number: '',
@@ -83,14 +80,83 @@ const CheckoutSection = ({cartList}) => {
     // tabs handler
     function faqHandler(name) {
         setExpanded({
-            billing_adress: false,
-            payment: true, [name]: !tabs[name]
+            billing_adress: true,
+            payment: false, [name]: !tabs[name]
         });
     }
 
+    //Order details
+    function creatingOrder() {
+        const order = {
+            client_id: 11,
+            totalAmount: totalPrice(cartList),
+            address: forms.address,
+            paymentMethod: forms.payment_method === 'cash' ? 'Cash' : 'Card',
+            notes: `${forms.name} ${forms.lname} - ${forms.email} - ${forms.phone} - ${forms.notes}`,
+            products: cartList.map(item => ({
+                product_id: item.id,
+                quantity: item.qty
+            }))
+        }
+
+        //Mandar datos a la API
+        try {
+            axios.post(URL + 'orders', order)
+        }
+        catch (error) {
+            console.log(error)
+        }
+
+        return order;
+    }
+
+    const handleOrderCreation = async () => {
+        if (cartList.length === 0) {
+            toast.error("No hay productos en el carrito.");
+            return;
+        }
+    
+        if (!isFormValid()) {
+            toast.error("Por favor, completa todos los campos obligatorios.");
+            return;
+        }
+    
+        try {
+            // Verificar inventario
+            const inventoryCheck = await Promise.all(cartList.map(async (item) => {
+                const response = await axios.get(`${URL}/products/stock/${item.id}`); // Supongamos que esta ruta devuelve la cantidad en stock
+                return {
+                    ...item,
+                    availableQty: response.data.stock // Supongamos que `stock` es la cantidad en inventario
+                };
+            }));
+    
+            // Verificar si la cantidad solicitada supera la disponible
+            const insufficientStock = inventoryCheck.find(item => item.qty > item.availableQty);
+    
+            if (insufficientStock) {
+                toast.error(`No hay suficiente inventario para el producto: ${insufficientStock.product_name}. Disponible: ${insufficientStock.availableQty}`);
+                return;
+            }else{
+                toast.success("Inventario verificado con éxito.");
+            }
+    
+            // Crear la orden si hay suficiente inventario
+            const order = creatingOrder();
+            console.log(order); // Muestra el JSON en la consola
+            cartList.length = 0; // Vacía el carrito
+            toast.success("Pedido creado con éxito.");
+            navigate('/order_received'); // Redirige después de crear el pedido
+            
+        } catch (error) {
+            console.error("Error al verificar el inventario:", error);
+            toast.error("Hubo un problema al verificar el inventario. Inténtalo de nuevo.");
+        }
+    };
+
     // forms handler
     const changeHandler = e => {
-        setForms({...forms, [e.target.name]: e.target.value})
+        setForms({ ...forms, [e.target.name]: e.target.value })
     };
 
     return (
@@ -102,7 +168,7 @@ const CheckoutSection = ({cartList}) => {
                             <Grid className="cuponWrap checkoutCard">
                                 <Button className="collapseBtn" fullWidth onClick={() => faqHandler('billing_adress')}>
                                     Billing Address
-                                    <FontAwesome name={tabs.billing_adress ? 'minus' : 'plus'}/>
+                                    <FontAwesome name={tabs.billing_adress ? 'minus' : 'plus'} />
                                 </Button>
                                 <Collapse in={tabs.billing_adress} timeout="auto" unmountOnExit>
                                     <Grid className="chCardBody">
@@ -112,14 +178,15 @@ const CheckoutSection = ({cartList}) => {
                                                     <TextField
                                                         fullWidth
                                                         label="Name"
-                                                        name="fname"
-                                                        value={forms.fname}
+                                                        name="name"
+                                                        value={forms.name}
                                                         onChange={(e) => changeHandler(e)}
                                                         type="text"
                                                         InputLabelProps={{
                                                             shrink: true,
                                                         }}
                                                         className="formInput radiusNone"
+                                                        required
                                                     />
                                                 </Grid>
                                                 <Grid item sm={6} xs={12}>
@@ -134,6 +201,7 @@ const CheckoutSection = ({cartList}) => {
                                                             shrink: true,
                                                         }}
                                                         className="formInput radiusNone"
+                                                        required
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -150,6 +218,7 @@ const CheckoutSection = ({cartList}) => {
                                                             shrink: true,
                                                         }}
                                                         className="formInput radiusNone"
+                                                        required
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -164,6 +233,7 @@ const CheckoutSection = ({cartList}) => {
                                                             shrink: true,
                                                         }}
                                                         className="formInput radiusNone"
+                                                        required
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -178,6 +248,7 @@ const CheckoutSection = ({cartList}) => {
                                                             shrink: true,
                                                         }}
                                                         className="formInput radiusNone"
+                                                        required
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -186,8 +257,8 @@ const CheckoutSection = ({cartList}) => {
                                                         multiline
                                                         label="Order Notes"
                                                         placeholder="Note about your order"
-                                                        name="note"
-                                                        value={forms.note}
+                                                        name="notes"
+                                                        value={forms.notes}
                                                         onChange={(e) => changeHandler(e)}
                                                         type="text"
                                                         InputLabelProps={{
@@ -204,16 +275,16 @@ const CheckoutSection = ({cartList}) => {
                             <Grid className="cuponWrap checkoutCard">
                                 <Button className="collapseBtn" fullWidth onClick={() => faqHandler('payment')}>
                                     Payment Method
-                                    <FontAwesome name={tabs.payment ? 'minus' : 'plus'}/>
+                                    <FontAwesome name={tabs.payment ? 'minus' : 'plus'} />
                                 </Button>
                                 <Grid className="chCardBody">
                                     <Collapse in={tabs.payment} timeout="auto">
                                         <RadioGroup className="paymentMethod" aria-label="Payment Method"
-                                                    name="payment_method"
-                                                    value={forms.payment_method}
-                                                    onChange={(e) => changeHandler(e)}>
-                                            <FormControlLabel value="card" control={<Radio color="primary"/>} label="Payment By Card "/>
-                                            <FormControlLabel value="cash" control={<Radio color="primary"/>} label="Cash On delivery"/>
+                                            name="payment_method"
+                                            value={forms.payment_method}
+                                            onChange={(e) => changeHandler(e)}>
+                                            <FormControlLabel value="card" control={<Radio color="primary" />} label="Payment By Card " />
+                                            <FormControlLabel value="cash" control={<Radio color="primary" />} label="Cash On delivery" />
                                         </RadioGroup>
                                         <Collapse in={forms.payment_method === 'card'} timeout="auto">
                                             <Grid className="cardType">
@@ -221,24 +292,25 @@ const CheckoutSection = ({cartList}) => {
                                                     <Grid
                                                         key={i}
                                                         className={`cardItem ${forms.card_type === item.title ? 'active' : null}`}
-                                                        onClick={() => setForms({...forms, card_type: item.title})}>
-                                                        <img src={item.img} alt={item.title}/>
+                                                        onClick={() => setForms({ ...forms, card_type: item.title })}>
+                                                        <img src={item.img} alt={item.title} />
                                                     </Grid>
                                                 ))}
                                             </Grid>
                                             <Grid>
                                                 <CheckWrap
-                                                totalPrice={totalPrice(cartList)}
-                                                payment_method={forms.payment_method}
+                                                    totalPrice={totalPrice(cartList)}
+                                                    payment_method={forms.payment_method}
                                                 />
                                             </Grid>
                                         </Collapse>
                                         <Collapse in={forms.payment_method === 'cash'} timeout="auto">
-                                            {/* Print cartlist when button clicked */}
-                                            <Button onClick={() => console.log(cartList)}>Print cartList</Button>
-
                                             <Grid className="cardType">
-                                                <Link to='/order_received' className="cBtn cBtnLarge cBtnTheme mt-20 ml-15" type="submit">Proceed to Checkout</Link>
+                                                <Button
+                                                    className="cBtn cBtnLarge cBtnTheme mt-20 ml-15"
+                                                    onClick={handleOrderCreation}>
+                                                    Proceed to Checkout
+                                                </Button>
                                             </Grid>
                                         </Collapse>
                                     </Collapse>

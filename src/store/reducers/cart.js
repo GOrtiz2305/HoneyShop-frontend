@@ -3,6 +3,7 @@ import {
   DECREMENT_QUANTITY,
   INCREMENT_QUANTITY,
   REMOVE_FROM_CART,
+  CLEAR_CART,
 } from "../actions/type";
 import { minValueOne } from "../../utils";
 
@@ -15,6 +16,8 @@ export const cartReducer = (state = init, action) => {
     case ADD_TO_CART:
       const productId = action.product.id;
       const productQty = action.qty ? action.qty : 1;
+
+      // If product already in cart
       if (state.cart.findIndex((product) => product.id === productId) !== -1) {
         const cart = state.cart.reduce((cartAcc, product) => {
           if (product.id === productId) {
@@ -37,6 +40,7 @@ export const cartReducer = (state = init, action) => {
         return { ...state, cart };
       }
 
+      // If product not in cart
       return {
         ...state,
         cart: [
@@ -57,6 +61,9 @@ export const cartReducer = (state = init, action) => {
       return {
         cart: state.cart.filter((item) => item.id !== action.product_id),
       };
+
+    case CLEAR_CART:
+      return { ...state, cart: [] };
 
     case INCREMENT_QUANTITY:
       const inc_productId = action.product_id;
