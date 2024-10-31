@@ -37,13 +37,13 @@ const AddPresentationForm = () => {
     
             });
             
-            console.log("Trying " , data);
+            //console.log("Trying " , data);
 
             if (!response.ok) {
             throw new Error('Error creating presentation');
             }
     
-            console.log('Presentation created successfully!');
+            //console.log('Presentation created successfully!');
             setPresentationName('');
             setError({}); // Clear any errors
     

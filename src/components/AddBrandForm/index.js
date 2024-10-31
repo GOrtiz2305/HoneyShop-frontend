@@ -37,7 +37,7 @@ const AddBrandForm = () => {
     
             });
             
-            console.log("Trying " , data);
+            //console.log("Trying " , data);
 
             if (!response.ok) {
             throw new Error('Error creating brand');

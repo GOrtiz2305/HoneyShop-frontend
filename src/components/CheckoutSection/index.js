@@ -135,22 +135,22 @@ const CheckoutSection = ({ cartList }) => {
             const insufficientStock = inventoryCheck.find(item => item.qty > item.availableQty);
     
             if (insufficientStock) {
-                toast.error(`No hay suficiente inventario para el producto: ${insufficientStock.product_name}. Disponible: ${insufficientStock.availableQty}`);
+                toast.error(`There's not enough stockavailable for: ${insufficientStock.product_name}. Available: ${insufficientStock.availableQty}`);
                 return;
             }else{
-                toast.success("Inventario verificado con éxito.");
+                toast.success("Inventory check passed.");
             }
     
             // Crear la orden si hay suficiente inventario
             const order = creatingOrder();
-            console.log(order); // Muestra el JSON en la consola
+            //console.log(order); // Muestra el JSON en la consola
             cartList.length = 0; // Vacía el carrito
-            toast.success("Pedido creado con éxito.");
+            toast.success("Order created successfully.");
             navigate('/order_received'); // Redirige después de crear el pedido
             
         } catch (error) {
-            console.error("Error al verificar el inventario:", error);
-            toast.error("Hubo un problema al verificar el inventario. Inténtalo de nuevo.");
+            console.error("Error at verifying inventory:", error);
+            toast.error("There was a problem at checking the inventory. Try again.");
         }
     };
 

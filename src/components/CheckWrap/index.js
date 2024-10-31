@@ -59,7 +59,7 @@ const CheckWrap = ({totalPrice, payment_method}) => {
                         body: JSON.stringify(data),
                     });
                     
-                    console.log(response);
+                    //console.log(response);
 
                     if (response.data.success) { 
                         setValue({

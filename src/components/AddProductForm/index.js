@@ -89,14 +89,14 @@ const AddProductForm = () => {
     
             });
             
-            console.log("Trying " , data);
+            //console.log("Trying " , data);
 
             if (!response.ok) {
             throw new Error('Error creating product');
             }
     
             // Handle successful creation (e.g., clear form, show success message)
-            console.log('Product created successfully!');
+            //console.log('Product created successfully!');
             setProductName('');
             setPrice('');
             setStock('');
