@@ -21,6 +21,7 @@ const SignUpPage = (props) => {
         last_names: '',
         address: '',
         phone: '',
+        nit: '',
     });
 
     const changeHandler = (e) => {
@@ -51,6 +52,7 @@ const SignUpPage = (props) => {
                 last_names: '',
                 address: '',
                 phone: '',
+                nit: '',
             });
             validator.hideMessages();
             axios.post(URL + 'clients', value)
@@ -136,6 +138,23 @@ const SignUpPage = (props) => {
                                 onChange={(e) => changeHandler(e)}
                             />
                             {validator.message('phone', value.phone, 'required')}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                className="inputOutline"
+                                fullWidth
+                                placeholder="Nit"
+                                value={value.nit}
+                                variant="outlined"
+                                name="nit"
+                                label="Nit"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onBlur={(e) => changeHandler(e)}
+                                onChange={(e) => changeHandler(e)}
+                            />
+                            {validator.message('nit', value.nit, 'required')}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField

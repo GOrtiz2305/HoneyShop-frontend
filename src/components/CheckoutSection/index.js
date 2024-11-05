@@ -27,6 +27,16 @@ import CheckWrap from '../CheckWrap'
 import './style.scss';
 import { toast } from 'react-toastify';
 
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
 const cardType = [
     {
         title: 'visa',
@@ -49,6 +59,11 @@ const cardType = [
 
 const CheckoutSection = ({ cartList }) => {
     const navigate = useNavigate();
+    let userId = 24;
+
+    if (localStorage.getItem('token')) {
+        userId = parseJwt(localStorage.getItem('token')).id
+    }
 
     const isFormValid = () => {
         const { name, lname, address, email, phone } = forms;
@@ -88,7 +103,7 @@ const CheckoutSection = ({ cartList }) => {
     //Order details
     function creatingOrder() {
         const order = {
-            client_id: 11,
+            client_id: userId,
             totalAmount: totalPrice(cartList),
             address: forms.address,
             paymentMethod: forms.payment_method === 'cash' ? 'Cash' : 'Card',
@@ -115,12 +130,12 @@ const CheckoutSection = ({ cartList }) => {
             toast.error("No hay productos en el carrito.");
             return;
         }
-    
+
         if (!isFormValid()) {
             toast.error("Por favor, completa todos los campos obligatorios.");
             return;
         }
-    
+
         try {
             // Verificar inventario
             const inventoryCheck = await Promise.all(cartList.map(async (item) => {
@@ -130,24 +145,24 @@ const CheckoutSection = ({ cartList }) => {
                     availableQty: response.data.stock // Supongamos que `stock` es la cantidad en inventario
                 };
             }));
-    
+
             // Verificar si la cantidad solicitada supera la disponible
             const insufficientStock = inventoryCheck.find(item => item.qty > item.availableQty);
-    
+
             if (insufficientStock) {
                 toast.error(`There's not enough stockavailable for: ${insufficientStock.product_name}. Available: ${insufficientStock.availableQty}`);
                 return;
-            }else{
+            } else {
                 toast.success("Inventory check passed.");
             }
-    
+
             // Crear la orden si hay suficiente inventario
             const order = creatingOrder();
             //console.log(order); // Muestra el JSON en la consola
             cartList.length = 0; // Vacía el carrito
             toast.success("Order created successfully.");
             navigate('/order_received'); // Redirige después de crear el pedido
-            
+
         } catch (error) {
             console.error("Error at verifying inventory:", error);
             toast.error("There was a problem at checking the inventory. Try again.");
