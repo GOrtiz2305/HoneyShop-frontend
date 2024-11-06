@@ -130,7 +130,7 @@ class Header extends Component {
                             <Link onClick={this.logoutHandler} to="/login">Log out</Link>
                           </li>
                           <li>
-                            <Link onClick={this.logoutHandler} to="/profile">Profile</Link>
+                            <Link to="/profile">Orders History</Link>
                           </li>
                         </ul>
                         :
