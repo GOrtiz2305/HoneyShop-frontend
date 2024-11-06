@@ -59,11 +59,6 @@ const cardType = [
 
 const CheckoutSection = ({ cartList }) => {
     const navigate = useNavigate();
-    let userId = 24;
-
-    if (localStorage.getItem('token')) {
-        userId = parseJwt(localStorage.getItem('token')).id
-    }
 
     const isFormValid = () => {
         const { name, lname, address, email, phone } = forms;
@@ -101,7 +96,21 @@ const CheckoutSection = ({ cartList }) => {
     }
 
     //Order details
-    function creatingOrder() {
+    async function creatingOrder() {
+        let userId;
+        
+        if (localStorage.getItem('token')) {
+            const actualUser = parseJwt(localStorage.getItem('token')).id
+            //Get client where user_id = userId
+            try {
+                const userInfo = await axios.get(URL + 'clients/user/' + actualUser);
+                userId = userInfo.data.id;
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+
         const order = {
             client_id: userId,
             totalAmount: totalPrice(cartList),
@@ -159,9 +168,9 @@ const CheckoutSection = ({ cartList }) => {
             // Crear la orden si hay suficiente inventario
             const order = creatingOrder();
             //console.log(order); // Muestra el JSON en la consola
-            cartList.length = 0; // Vacía el carrito
             toast.success("Order created successfully.");
             navigate('/order_received'); // Redirige después de crear el pedido
+            cartList.length = 0; // Vacía el carrito
 
         } catch (error) {
             console.error("Error at verifying inventory:", error);
