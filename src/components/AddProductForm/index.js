@@ -80,10 +80,12 @@ const AddProductForm = () => {
         };
 
         try {
+            const token = localStorage.getItem('token'); // Obtain token from localStorage
             const response = await fetch(URL + 'products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'x-access-token': token,
             },
             body: JSON.stringify(data),
     

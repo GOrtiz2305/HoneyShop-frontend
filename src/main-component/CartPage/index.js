@@ -56,8 +56,8 @@ const CartPage = (props) => {
                                   <li className="first-cart">
                                     {catItem.product_name}
                                   </li>
-                                  {/* <li>Brand : {catItem.brand.brand_name}</li> */}
-                                  {/* <li>Size : {catItem.presentation_id}</li> */}
+                                  <li>Brand : {catItem.brand.brand_name}</li>
+                                  <li>Size : {catItem.presentation.presentation_name}</li> 
                                 </ul>
                               </td>
                               <td className="stock">

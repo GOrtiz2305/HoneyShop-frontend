@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { URL } from "../../config";
+import { toast } from 'react-toastify';
 
 const AddBrandForm = () => {
     const [brand_name, setBrandName] = useState('');
@@ -28,10 +29,12 @@ const AddBrandForm = () => {
         };
 
         try {
+            const token = localStorage.getItem('token'); // Obtain token from localStorage
             const response = await fetch(URL + 'brands', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'x-access-token': token,
             },
             body: JSON.stringify(data),
     
@@ -41,13 +44,15 @@ const AddBrandForm = () => {
 
             if (!response.ok) {
             throw new Error('Error creating brand');
+            }else{
+                toast.success("Brand created successfully");
             }
     
             setBrandName('');
             setError({}); // Clear any errors
     
         } catch (error) {
-            console.error('Error creating brand:', error);
+            toast.error('Error creating brand:', error);
             // Handle errors appropriately (e.g., display an error message to the user)
         }
     };

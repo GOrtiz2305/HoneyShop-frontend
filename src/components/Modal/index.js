@@ -57,12 +57,18 @@ const DefaultModal = ({
   //Handle the update of the stock
   const updateProductInfo = async (id) => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.put(updateUri + id, {
         name: productName,
         stock: parseFloat(newStock), // Ensure numerical value for stock
         product_name: productName,
         price: parseFloat(price),
         product_description: product_description,
+      },
+      {
+        headers: {
+          "x-access-token": token,
+        },
       });
       window.location.reload();
       updateProduct(response.data);

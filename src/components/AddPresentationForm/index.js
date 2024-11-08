@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { URL } from "../../config";
+import { toast } from 'react-toastify';
 
 const AddPresentationForm = () => {
     const [presentation_name, setPresentationName] = useState('');
@@ -28,10 +29,12 @@ const AddPresentationForm = () => {
         };
 
         try {
+            const token = localStorage.getItem('token'); // Obtain token from localStorage
             const response = await fetch(URL + 'presentations', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'x-access-token': token
             },
             body: JSON.stringify(data),
     
@@ -41,15 +44,16 @@ const AddPresentationForm = () => {
 
             if (!response.ok) {
             throw new Error('Error creating presentation');
+            }else{
+                toast.success('Presentation created successfully!');
             }
     
-            //console.log('Presentation created successfully!');
             setPresentationName('');
-            setError({}); // Clear any errors
+            setError({});
     
         } catch (error) {
             console.error('Error creating presentation:', error);
-            // Handle errors appropriately (e.g., display an error message to the user)
+            toast.error('Error creating presentation');
         }
     };
 

@@ -23,7 +23,7 @@ const ProductSingleSec = ({ item, addToCart }) => {
         setPresentationName(presentationResponse.data);
 
         const brandResponse = await axios.get(`${URL}brands/${productResponse.data.brand_id}`);
-        setBrandName(brandResponse.data); 
+        setBrandName(brandResponse.data);
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
@@ -63,26 +63,26 @@ const ProductSingleSec = ({ item, addToCart }) => {
                   <div className="color-name">
                     <span>Weight :</span>
                     <ul>
-                        <li className="color">
+                      <li className="color">
                         <input type="radio" name="size" value="30" />
-                          <label>
-                            {presentationName.presentation_name}
-                          </label>
-                        </li>
-                      </ul>
+                        <label>
+                          {presentationName.presentation_name}
+                        </label>
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div className="product-filter-item color filter-size">
                   <div className="color-name">
                     <span>Brand :</span>
                     <ul>
-                        <li className="color">
+                      <li className="color">
                         <input type="radio" name="size" value="30" />
-                          <label>
-                            {brandName.brand_name}
-                          </label>
-                        </li>
-                      </ul>
+                        <label>
+                          {brandName.brand_name}
+                        </label>
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div className="pro-single-btn">
