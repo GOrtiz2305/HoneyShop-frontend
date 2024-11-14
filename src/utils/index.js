@@ -12,10 +12,6 @@ function totalPrice(items) {
     }, 0);
 }
 
-function isWishListed(productId, wishList) {
-    return wishList.findIndex(product => product.id === productId) !== -1;
-}
-
 function getCompareList(items) {
     return items.slice(0, 4);
 }
@@ -89,7 +85,6 @@ export {
     getFlashProducts,
     getFeaturedProducts,
     totalPrice,
-    isWishListed,
     filterProductByCategory,
     filterProductByPrice,
     filterProductByColor,

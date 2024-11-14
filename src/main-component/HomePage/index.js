@@ -7,15 +7,12 @@ import Testimonial from "../../components/Testimonial";
 import Client from "../../components/Client";
 import Footer from "../../components/footer";
 import Scrollbar from "../../components/scrollbar";
-import { addToCart, addToWishList } from "../../store/actions/action";
+import { addToCart } from "../../store/actions/action";
 
-const HomePage = ({ addToCart, addToWishList }) => {
+const HomePage = ({ addToCart }) => {
 
   const addToCartProduct = (product, qty = 1) => {
     addToCart(product, qty);
-  };
-  const addToWishListProduct = (product, qty = 1) => {
-    addToWishList(product, qty);
   };
 
   return (
@@ -31,4 +28,4 @@ const HomePage = ({ addToCart, addToWishList }) => {
     </Fragment>
   );
 };
-export default connect(null, { addToCart, addToWishList })(HomePage);
+export default connect(null, { addToCart })(HomePage);

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import MobileMenu from "../../components/MobileMenu";
 import min3 from "../../images/shop/mini-cart/bee2.png";
 import { totalPrice } from "../../utils";
-import { removeFromCart, removeFromWishList } from "../../store/actions/action";
+import { removeFromCart } from "../../store/actions/action";
 
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
@@ -20,7 +20,6 @@ function parseJwt(token) {
 class Header extends Component {
   state = {
     isCartShow: false,
-    isWishlistShow: false,
   };
 
   cartHandler = () => {
@@ -101,6 +100,12 @@ class Header extends Component {
                     { tokenExistAndStillValid && parseJwt(localStorage.getItem('token')).role === 2 ?
                       <li className="menu-item-has-children">
                         <Link onClick={ClickHandler} to="/inventory">Inventory</Link>
+                      </li>
+                      : null
+                    }
+                    { tokenExistAndStillValid && parseJwt(localStorage.getItem('token')).role === 2 ?
+                      <li className="menu-item-has-children">
+                        <Link onClick={ClickHandler} to="/orders">Orders</Link>
                       </li>
                       : null
                     }
@@ -234,9 +239,8 @@ class Header extends Component {
 const mapStateToProps = (state) => {
   return {
     carts: state.cartList.cart,
-    wishs: state.wishList.w_list,
   };
 };
 
 
-export default connect(mapStateToProps, { removeFromCart, removeFromWishList })(Header);
+export default connect(mapStateToProps, { removeFromCart })(Header);

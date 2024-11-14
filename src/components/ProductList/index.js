@@ -5,7 +5,7 @@ import { URL } from "../../config";
 
 const ProductsPerPage = 4; // Número de productos por pestaña
 
-const ProductList = ({ addToCartProduct, addToWishListProduct }) => {
+const ProductList = ({ addToCartProduct }) => {
 
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);

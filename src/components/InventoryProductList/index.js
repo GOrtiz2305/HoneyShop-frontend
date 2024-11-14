@@ -8,7 +8,7 @@ import RegisterPage from "../AddRegisterPage";
 import { URL } from "../../config";
 
 
-const InventoryProductList = ({ products, addToCartProduct, addToWishListProduct }) => {
+const InventoryProductList = ({ products, addToCartProduct }) => {
   const [activeTab, setActiveTab] = useState("1");
   const [activeProducts, setActiveProducts] = useState([]);
   const [inactiveProducts, setInactiveProducts] = useState([]);

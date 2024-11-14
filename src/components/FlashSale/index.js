@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import DefaultModal from "../../components/Modal";
 import Offer from '../../components/countdown'
 
-const FlashSale = ({ products, addToCartProduct,addToWishListProduct }) => {
+const FlashSale = ({ products, addToCartProduct }) => {
     const ClickHandler = () => {
         window.scrollTo(10, 0);
       };
@@ -63,16 +63,6 @@ const FlashSale = ({ products, addToCartProduct,addToWishListProduct }) => {
                                         >
                                             <i className="fi ti-eye"></i>
                                         </button>
-                                    </li>
-                                    <li>
-                                    <button
-                                        data-bs-toggle="tooltip"
-                                        data-bs-html="true"
-                                        title="Add to Wishlist"
-                                        onClick={() => addToWishListProduct(product)}
-                                    >
-                                        <i className="fi flaticon-like"></i>
-                                    </button>
                                     </li>
                                 </ul>
                                 <div className="offer-thumb">

@@ -4,7 +4,7 @@ import axios from "axios";
 import DefaultModal from "../Modal";
 import { URL } from "../../config";
 
-const Product = ({ products, addToCartProduct, addToWishListProduct }) => {
+const Product = ({ products, addToCartProduct }) => {
   const [setData] = useState([]);
 
   useEffect(() => {
@@ -77,16 +77,6 @@ const Product = ({ products, addToCartProduct, addToWishListProduct }) => {
                             onClick={() => handleClickOpen(product)}
                           >
                             <i className="fi ti-eye"></i>
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            data-bs-toggle="tooltip"
-                            data-bs-html="true"
-                            title="Add to Wishlist"
-                            onClick={() => addToWishListProduct(product)}
-                          >
-                            <i className="fi flaticon-like"></i>
                           </button>
                         </li>
                       </ul>

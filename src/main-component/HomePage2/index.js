@@ -14,21 +14,16 @@ import Client from '../../components/Client'
 import BlogSection from '../../components/BlogSection'
 import Footer from '../../components/footer'
 import Scrollbar from '../../components/scrollbar'
-import { addToCart,addToWishList } from "../../store/actions/action";
+import { addToCart } from "../../store/actions/action";
 import api from "../../api";
 
-const HomePage2 =({ addToCart,addToWishList }) => {
+const HomePage2 =({ addToCart }) => {
 
     const productsArray = api();
 
     const addToCartProduct = (product) => {
         addToCart(product);
     };
-
-    const addToWishListProduct = (product) => {
-        addToWishList(product);
-    };
-
 
     const products = productsArray
 
@@ -40,13 +35,11 @@ const HomePage2 =({ addToCart,addToWishList }) => {
             <About/>
             <Product
                 addToCartProduct={addToCartProduct}
-                addToWishListProduct={addToWishListProduct}
                 products={products}
             />
             <OfferSection/>
             <FlashSale
                 addToCartProduct={addToCartProduct}
-                addToWishListProduct={addToWishListProduct}
                 products={products}
             />
             <Project/>
@@ -59,4 +52,4 @@ const HomePage2 =({ addToCart,addToWishList }) => {
         </Fragment>
     )
 };
-export default connect(null, { addToCart,addToWishList })(HomePage2);
+export default connect(null, { addToCart })(HomePage2);

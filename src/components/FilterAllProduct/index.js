@@ -4,7 +4,7 @@ import classnames from "classnames";
 import ProductGrid from "../ProductGrid";
 import ProductList from "../ProductList";
 
-const FilterAllProduct = ({ products, addToCartProduct,addToWishListProduct }) => {
+const FilterAllProduct = ({ products, addToCartProduct }) => {
   const [activeTab, setActiveTab] = useState("1");
 
   const toggle = (tab) => {
@@ -12,7 +12,7 @@ const FilterAllProduct = ({ products, addToCartProduct,addToWishListProduct }) =
   };
 
   return (
-    <div className="col-lg-8">
+    <div className="">
       <div className="shop-section-top-inner">
         <div className="shoping-list">
           <Nav tabs>
@@ -43,7 +43,6 @@ const FilterAllProduct = ({ products, addToCartProduct,addToWishListProduct }) =
         <TabPane tabId="1">
           <ProductGrid
             addToCartProduct={addToCartProduct}
-            addToWishListProduct={addToWishListProduct}
             products={products}
           />
         </TabPane>
@@ -51,7 +50,6 @@ const FilterAllProduct = ({ products, addToCartProduct,addToWishListProduct }) =
         <TabPane tabId="2">
           <ProductList
             addToCartProduct={addToCartProduct}
-            addToWishListProduct={addToWishListProduct}
             products={products}
           />
         </TabPane>

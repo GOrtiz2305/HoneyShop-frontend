@@ -15,6 +15,7 @@ import ForgotPassword from '../ForgotPassword'
 import InventoryPage from '../InventoryPage'
 import ProtectedRoutes from '../RouterProtection/ProtectedRoutes'
 import ProfilePage from '../ProfilePage';
+import OrdersPage from '../OrdersPage';
 
 const AllRoute = () => {
 
@@ -36,6 +37,7 @@ const AllRoute = () => {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route element={<ProtectedRoutes/>}>
             <Route path='/inventory' element={<InventoryPage />} />
+            <Route path='/orders' element={<OrdersPage />} />
           </Route>
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='*' element={<ErrorPage />} />

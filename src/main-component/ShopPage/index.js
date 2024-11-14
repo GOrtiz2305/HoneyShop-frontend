@@ -68,11 +68,11 @@ const ShopPage = ({ addToCart }) => {
       <div className="shop-section">
         <div className="container">
           <div className="row">
-            <FilterSidebar
+            {/* <FilterSidebar
               filter={filter}
               priceChangeHandler={priceChangeHandler}
               changeHandler={changeHandler}
-            />
+            /> */}
             <FilterAllProduct
               addToCartProduct={addToCartProduct}
               products={products}
