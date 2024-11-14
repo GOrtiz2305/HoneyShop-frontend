@@ -5,6 +5,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import axios from "axios";
 import { URL } from "../../config";
+import Miel from './Miel.png';
 
 const ProductSingleSec = ({ item, addToCart }) => {
   const [product, setProduct] = useState([]);
@@ -44,7 +45,7 @@ const ProductSingleSec = ({ item, addToCart }) => {
                     <Zoom>
                       <img
                         alt={product.product_name}
-                        src={item.proImg || ''}
+                        src={Miel || ''}
                         width="500"
                       />
                     </Zoom>

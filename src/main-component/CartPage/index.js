@@ -12,6 +12,7 @@ import {
   incrementQuantity,
   decrementQuantity,
 } from "../../store/actions/action";
+import Miel from "./Miel.png";
 
 const CartPage = (props) => {
   const ClickHandler = () => {
@@ -49,7 +50,7 @@ const CartPage = (props) => {
                           carts.map((catItem, crt) => (
                             <tr key={crt}>
                               <td className="images">
-                                <img alt="" />
+                                <img src={Miel} alt="" />
                               </td>
                               <td className="product">
                                 <ul>

@@ -2,6 +2,7 @@ import React, { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { URL } from "../../config";
+import Miel from './Miel.png';
 
 const ProductsPerPage = 9; // Número de productos por pestaña
 
@@ -40,7 +41,7 @@ const ProductGrid = ({ addToCartProduct }) => {
             >
               <div className="product-item">
                 <div className="product-img">
-                  <img src={product.proImg} alt="" />
+                  <img src={Miel} alt="" />
                   <ul>
                     <li>
                       <button

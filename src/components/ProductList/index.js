@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { URL } from "../../config";
+import Miel from './Miel.png';
 
 const ProductsPerPage = 4; // Número de productos por pestaña
 
@@ -51,6 +52,21 @@ const ProductList = ({ addToCartProduct }) => {
             displayedProducts.map((product, pitem) => (
               <div className="col-xl-12 col-12" key={pitem}>
                 <div className="product-item">
+                  <div className="product-img">
+                    <img src={Miel} alt="" />
+                    <ul>
+                      <li>
+                        <button
+                          data-bs-toggle="tooltip"
+                          data-bs-html="true"
+                          title="Add to Cart"
+                          onClick={() => addToCartProduct(product)}
+                        >
+                          <i className="fi flaticon-shopping-cart"></i>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                   <div className="product-content">
                     <h2>
                       <Link onClick={ClickHandler} to={`/product-single/${product.id}`}>
