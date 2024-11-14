@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfileForm from '../ProfileForm';
+import PersonalOrdersList from '../PersonalOrdersList';
 
 const ProfileInfo = () => {
 
@@ -14,6 +15,12 @@ const ProfileInfo = () => {
                             </div>
                             <div className="contact-form">
                                 <ProfileForm/>
+                            </div>
+                            <div className="section-title-s3 section-title-s5">
+                                <h2>Your Orders</h2>
+                            </div>
+                            <div className="contact-form">
+                                <PersonalOrdersList/>
                             </div>
                         </div>
                     </div>

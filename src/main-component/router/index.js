@@ -38,8 +38,8 @@ const AllRoute = () => {
           <Route element={<ProtectedRoutes/>}>
             <Route path='/inventory' element={<InventoryPage />} />
             <Route path='/orders' element={<OrdersPage />} />
+            <Route path='/profile' element={<ProfilePage />} />
           </Route>
-          <Route path='/profile' element={<ProfilePage />} />
           <Route path='*' element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
